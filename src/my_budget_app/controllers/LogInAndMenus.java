@@ -108,7 +108,7 @@ public class LogInAndMenus {
 
         }
         System.out.println("---------------------------");
-        System.out.println("Welcome Back, " + userSQL.retrieveFirstNameSQL(this.email) + "!");
+        System.out.println("Welcome Back, " + userSQL.retrieveFirstNameSQL(this.email) + "!  Please select from the following options:");
         System.out.println("---------------------------");
         mainMenu(this.email);
     }
