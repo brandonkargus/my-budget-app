@@ -5,7 +5,7 @@ import java.sql.SQLException;
 import static my_budget_app.controllers.LogInAndMenus.returnToMainMenu;
 
 /**
- * a class containing methods that interact with the "user" table in SQL
+ * class containing methods that interact with the "user" table in SQL
  */
 public class MySQLAccess extends DBParent {
 

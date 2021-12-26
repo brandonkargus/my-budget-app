@@ -6,6 +6,10 @@ import java.sql.SQLException;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
+/**
+ * class that houses the various methods used for log in and menus
+ * -contains an "email" variable, and a static Scanner
+ */
 public class LogInAndMenus {
     public String email;
     static Scanner scanner = new Scanner(System.in);
@@ -60,8 +64,8 @@ public class LogInAndMenus {
     }
 
     /**
-     * checks for potentially harmful characters to prevent Injection attack in SQL
-     * @param email
+     * checks for potentially harmful characters to prevent Injection attack in SQL, also ensures an "@" is included, further helping to validate email
+     * @param email - email entered by user
      * @return
      */
     public boolean isValidEmail(String email) {
@@ -69,6 +73,9 @@ public class LogInAndMenus {
             return false;
         if(email.contains(";"))
             return false;
+        if(!email.contains("@")){
+            return false;
+        }
         return true;
     }
 

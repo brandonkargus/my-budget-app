@@ -1,16 +1,18 @@
 package my_budget_app.controllers;
 
-import java.sql.SQLException;
-
 import static my_budget_app.controllers.LogInAndMenus.logInProcedure;
 
 /**
- * the main method to run the program
+ * class where the main method lives
  */
 public class MyBudgetApp {
 
-    public static void main(String[] args) throws SQLException, ClassNotFoundException {
-        System.out.println("Welcome to \"MyBudget\"!  Please select from the following options:");
+    /**
+     * main method to run the program, using a print-out line, and the logInProcedure() method
+     * @param args
+     */
+    public static void main(String[] args) {
+        System.out.println("Welcome to \"my-budget-app\"!  Please select from the following options:");
         logInProcedure();
 
     }
