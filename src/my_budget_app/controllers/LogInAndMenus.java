@@ -73,9 +73,8 @@ public class LogInAndMenus {
             return false;
         if(email.contains(";"))
             return false;
-        if(!email.contains("@")){
+        if(!email.contains("@"))
             return false;
-        }
         return true;
     }
 

@@ -19,7 +19,7 @@ public class DBParent {
     public void connectToDatabase() throws SQLException, ClassNotFoundException {
         Class.forName("com.mysql.cj.jdbc.Driver");
         String connectionString = "jdbc:mysql://localhost/my_budget_db?"
-                + "user=root&password=*******!"
+                + "user=root&password=*******"
                 + "&useSSL=false&allowPublicKeyRetrieval=true";
         connection = DriverManager.getConnection(connectionString);
         statement = connection.createStatement();
