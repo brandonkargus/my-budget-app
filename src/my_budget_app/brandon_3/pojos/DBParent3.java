@@ -1,11 +1,11 @@
-package my_budget_app.data;
+package my_budget_app.brandon_3.pojos;
 
 import java.sql.*;
 
 /**
  * class containing general use methods for SQL connection and disconnection
  */
-public class DBParent {
+public class DBParent3 {
     public Connection connection = null;
     public Statement statement = null;
     public ResultSet resultSet = null;
@@ -19,7 +19,7 @@ public class DBParent {
     public void connectToDatabase() throws SQLException, ClassNotFoundException {
         Class.forName("com.mysql.cj.jdbc.Driver");
         String connectionString = "jdbc:mysql://localhost/my_budget_db?"
-                + "user=root&password=*******"
+                + "user=root&password=**********"
                 + "&useSSL=false&allowPublicKeyRetrieval=true";
         connection = DriverManager.getConnection(connectionString);
         statement = connection.createStatement();
@@ -28,7 +28,7 @@ public class DBParent {
     /**
      * general use method that closes all SQL related objects in one call
      */
-    void close() {
+    public void close() {
         try {
             if (resultSet != null) {
                 resultSet.close();

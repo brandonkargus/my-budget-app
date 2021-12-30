@@ -1,6 +1,6 @@
-package my_budget_app.controllers;
+package my_budget_app.brandon_2.controllers;
 
-import my_budget_app.data.MySQLAccess;
+import my_budget_app.brandon_2.data.MySQLAccess;
 
 import java.sql.SQLException;
 import java.util.InputMismatchException;

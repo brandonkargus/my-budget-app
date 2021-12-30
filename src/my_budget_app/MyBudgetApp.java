@@ -1,6 +1,8 @@
-package my_budget_app.controllers;
+package my_budget_app;
 
-import static my_budget_app.controllers.LogInAndMenus.logInProcedure;
+import my_budget_app.brandon_3.controllers.AppController;
+
+import static my_budget_app.brandon_2.controllers.LogInAndMenus.logInProcedure;
 
 /**
  * class where the main method lives
@@ -13,7 +15,7 @@ public class MyBudgetApp {
      */
     public static void main(String[] args) {
         System.out.println("Welcome to \"my-budget-app\"!  Please select from the following options:");
-        logInProcedure();
-
+        //logInProcedure();
+        AppController.runApp();
     }
 }

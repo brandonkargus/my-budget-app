@@ -1,8 +1,8 @@
-package my_budget_app.data;
+package my_budget_app.brandon_2.data;
 
 import java.sql.SQLException;
 
-import static my_budget_app.controllers.LogInAndMenus.returnToMainMenu;
+import static my_budget_app.brandon_2.controllers.LogInAndMenus.returnToMainMenu;
 
 /**
  * class containing methods that interact with the "user" table in SQL
