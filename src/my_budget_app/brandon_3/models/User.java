@@ -1,4 +1,4 @@
-package my_budget_app.brandon_3.pojos;
+package my_budget_app.brandon_3.models;
 
 import java.util.ArrayList;
 
@@ -10,9 +10,10 @@ public class User extends DBParent3 {
     private String email;
     private String address;
     private String phone;
-    private ArrayList<Account> accounts;
-    private ArrayList<Debt> debts;
-    private ArrayList<Goal> goals;
+    private ArrayList<Accounts> accounts;
+    private ArrayList<Debts> debts;
+    private ArrayList<Goals> goals;
+
 
     public User(int userId, String first_name, String last_name, String email, String address, String phone) {
         this.userId = userId;
@@ -23,8 +24,16 @@ public class User extends DBParent3 {
         this.phone = phone;
     }
 
+    public User(String first_name, String last_name, String email, String address, String phone) {
+        this.first_name = first_name;
+        this.last_name = last_name;
+        this.email = email;
+        this.address = address;
+        this.phone = phone;
+    }
+
     public int getUserId() {
-        return userId;
+        return this.userId;
     }
 
     public void setUserId(int userId) {
@@ -32,7 +41,7 @@ public class User extends DBParent3 {
     }
 
     public String getFirst_name() {
-        return first_name;
+        return this.first_name;
     }
 
     public void setFirst_name(String first_name) {
@@ -40,7 +49,7 @@ public class User extends DBParent3 {
     }
 
     public String getLast_name() {
-        return last_name;
+        return this.last_name;
     }
 
     public void setLast_name(String last_name) {
@@ -48,7 +57,7 @@ public class User extends DBParent3 {
     }
 
     public String getEmail() {
-        return email;
+        return this.email;
     }
 
     public void setEmail(String email) {
@@ -56,7 +65,7 @@ public class User extends DBParent3 {
     }
 
     public String getAddress() {
-        return address;
+        return this.address;
     }
 
     public void setAddress(String address) {
@@ -64,90 +73,76 @@ public class User extends DBParent3 {
     }
 
     public String getPhone() {
-        return phone;
+        return this.phone;
     }
 
     public void setPhone(String phone) {
         this.phone = phone;
     }
 
-    public ArrayList<Account> getAccounts() {
-        return accounts;
+    public ArrayList<Accounts> getAccounts() {
+        return this.accounts;
     }
 
-    public void setAccounts(ArrayList<Account> accounts) {
+    public void setAccounts(ArrayList<Accounts> accounts) {
         this.accounts = accounts;
     }
 
-    public ArrayList<Debt> getDebts() {
-        return debts;
+    public ArrayList<Debts> getDebts() {
+        return this.debts;
     }
 
-    public void setDebts(ArrayList<Debt> debts) {
+    public void setDebts(ArrayList<Debts> debts) {
         this.debts = debts;
     }
 
-    public ArrayList<Goal> getGoals() {
-        return goals;
+    public ArrayList<Goals> getGoals() {
+        return this.goals;
     }
 
-    public void setGoals(ArrayList<Goal> goals) {
+    public void setGoals(ArrayList<Goals> goals) {
         this.goals = goals;
     }
 
     public void printAccounts() {
         System.out.println("Here's a summary of your accounts");
+        System.out.println("---------------------------------");
 
-        for (Account a : accounts){
+        for (Accounts a : accounts){
             System.out.println(a.toString());
         }
     }
 
     public void printDebts() {
         System.out.println("Here's a summary of your debts");
+        System.out.println("------------------------------");
 
-        for (Debt d : debts){
+        for (Debts d : debts){
             System.out.println(d.toString());
         }
     }
 
     public void printGoals() {
         System.out.println("Here's a summary of your goals");
+        System.out.println("------------------------------");
 
-        for (Goal g : goals){
+        for (Goals g : goals){
             System.out.println(g.toString());
         }
     }
 
     public void printInfo() {
-        System.out.println(toString());
+        System.out.println(this);
     }
-
-    public int getTotalNetWorth(){
-        int worth = 0;
-
-        for(Account a: accounts){
-            worth += a.getChecking();
-            worth += a.getSavings();
-        }
-
-        for(Debt d : debts){
-            worth -= d.getAuto_loan();
-            // ...
-        }
-
-        return worth;
-    }
-
     @Override
     public String toString() {
-        return "User{" +
-                "userId=" + userId +
-                ", first_name='" + first_name + '\'' +
-                ", last_name='" + last_name + '\'' +
-                ", email='" + email + '\'' +
-                ", address='" + address + '\'' +
-                ", phone='" + phone + '\'' +
-                '}';
+        return "Your user profile is as follows...." + "\r\n" +
+                "\r\n" +
+                "Id: " + this.userId + "\r\n" +
+                "First Name: " + this.first_name + "\r\n" +
+                "Last Name: " + this.last_name + "\r\n" +
+                "Email: " + this.email + "\r\n" +
+                "Address: " + this.address + "\r\n" +
+                "Phone: " + this.phone ;
     }
 }

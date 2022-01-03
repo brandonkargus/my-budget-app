@@ -1,10 +1,10 @@
 CREATE DATABASE  IF NOT EXISTS `my_budget_db` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
 USE `my_budget_db`;
--- MySQL dump 10.13  Distrib 8.0.27, for macos11 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.27, for Win64 (x86_64)
 --
 -- Host: localhost    Database: my_budget_db
 -- ------------------------------------------------------
--- Server version	8.0.23
+-- Server version	8.0.27
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -26,9 +26,9 @@ DROP TABLE IF EXISTS `accounts`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `accounts` (
   `account_id` int NOT NULL AUTO_INCREMENT,
-  `checking` int NOT NULL,
-  `savings` int NOT NULL,
   `user_id` int NOT NULL,
+  `checking` decimal(10,0) NOT NULL,
+  `savings` decimal(10,0) NOT NULL,
   PRIMARY KEY (`account_id`),
   UNIQUE KEY `account_id_UNIQUE` (`account_id`),
   KEY `accounts_users_fk_idx` (`user_id`),
@@ -42,7 +42,7 @@ CREATE TABLE `accounts` (
 
 LOCK TABLES `accounts` WRITE;
 /*!40000 ALTER TABLE `accounts` DISABLE KEYS */;
-INSERT INTO `accounts` VALUES (5,5000,2500,4),(6,650,8000,5),(7,1200,3500,6);
+INSERT INTO `accounts` VALUES (5,4,5000,2500),(6,5,650,8000),(7,6,1200,3500);
 /*!40000 ALTER TABLE `accounts` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -55,12 +55,12 @@ DROP TABLE IF EXISTS `debts`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `debts` (
   `debts_id` int NOT NULL AUTO_INCREMENT,
-  `student_loans` int NOT NULL,
-  `home_loan` int NOT NULL,
-  `auto_loan` int NOT NULL,
-  `credit_card` int NOT NULL,
-  `misc` int NOT NULL,
   `user_id` int NOT NULL,
+  `student_loans` decimal(10,0) NOT NULL,
+  `home_loan` decimal(10,0) NOT NULL,
+  `auto_loan` decimal(10,0) NOT NULL,
+  `credit_card` decimal(10,0) NOT NULL,
+  `misc` decimal(10,0) NOT NULL,
   PRIMARY KEY (`debts_id`),
   UNIQUE KEY `debts_id_UNIQUE` (`debts_id`),
   KEY `debts_user_fk_idx` (`user_id`),
@@ -74,7 +74,7 @@ CREATE TABLE `debts` (
 
 LOCK TABLES `debts` WRITE;
 /*!40000 ALTER TABLE `debts` DISABLE KEYS */;
-INSERT INTO `debts` VALUES (5,35000,250000,4500,0,0,4),(6,65000,175000,35000,5000,500,5),(7,7500,0,15000,750,225,6);
+INSERT INTO `debts` VALUES (5,4,35000,250000,4500,0,0),(6,5,65000,175000,35000,5000,500),(7,6,7500,0,15000,750,225);
 /*!40000 ALTER TABLE `debts` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -88,10 +88,10 @@ DROP TABLE IF EXISTS `goals`;
 CREATE TABLE `goals` (
   `goals_id` int NOT NULL AUTO_INCREMENT,
   `user_id` int NOT NULL,
-  `savings` int NOT NULL,
-  `vacation` int NOT NULL,
-  `retirement` int NOT NULL,
-  `misc` int NOT NULL,
+  `savings` decimal(10,0) NOT NULL,
+  `vacation` decimal(10,0) NOT NULL,
+  `retirement` decimal(10,0) NOT NULL,
+  `misc` decimal(10,0) NOT NULL,
   PRIMARY KEY (`goals_id`),
   UNIQUE KEY `goals_id_UNIQUE` (`goals_id`),
   KEY `goals_users_fk_idx` (`user_id`),
@@ -147,4 +147,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-12-30 13:49:27
+-- Dump completed on 2021-12-30 18:58:51

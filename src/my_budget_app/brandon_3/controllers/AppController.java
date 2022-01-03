@@ -1,13 +1,13 @@
 package my_budget_app.brandon_3.controllers;
 
-import my_budget_app.brandon_3.pojos.User;
+import my_budget_app.brandon_3.models.User;
 import my_budget_app.brandon_3.utils.UserInputUtils;
 
-import java.util.Scanner;
+import java.sql.SQLException;
 
 public class AppController {
 
-    public static void runApp(){
+    public static void runApp() throws SQLException, ClassNotFoundException {
         AppController app = new AppController();
         UserController userController = new UserController();
         userController.welcomeUser();
@@ -18,20 +18,23 @@ public class AppController {
             return;
         }
         User user = null;
+
         if(response == 1){
 
             while (true){
                 user = userController.logInUser();
 
                 if(user == null){
-                    System.out.println("What would you like to do?");
-                    System.out.println("1) create a new account?");
-                    System.out.println("2) try another email?");
+                    System.out.println("What would you like to do? (enter 1 or 2)");
+                    System.out.println("1) Create a new account:");
+                    System.out.println("2) Re-enter email:");
 
                     response = UserInputUtils.getValidIntInput(2);
 
                     if(response == 1){
                         user = userController.createNewUser();
+
+
                     } else {
                         continue;
                     }
