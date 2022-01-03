@@ -1,6 +1,7 @@
-package my_budget_app.brandon_3.data;
+package my_budget_app.data;
 
 import my_budget_app.brandon_3.models.*;
+import my_budget_app.models.*;
 
 import java.math.BigDecimal;
 import java.sql.SQLException;

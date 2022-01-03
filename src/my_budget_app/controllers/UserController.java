@@ -1,11 +1,11 @@
-package my_budget_app.brandon_3.controllers;
+package my_budget_app.controllers;
 
-import my_budget_app.brandon_3.data.JavaToSQL;
-import my_budget_app.brandon_3.models.Accounts;
-import my_budget_app.brandon_3.models.Debts;
-import my_budget_app.brandon_3.models.Goals;
-import my_budget_app.brandon_3.models.User;
-import my_budget_app.brandon_3.utils.UserInputUtils;
+import my_budget_app.data.JavaToSQL;
+import my_budget_app.models.Accounts;
+import my_budget_app.models.Debts;
+import my_budget_app.models.Goals;
+import my_budget_app.models.User;
+import my_budget_app.utils.UserInputUtils;
 
 import java.math.BigDecimal;
 import java.sql.SQLException;

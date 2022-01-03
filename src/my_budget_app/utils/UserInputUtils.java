@@ -1,4 +1,4 @@
-package my_budget_app.brandon_3.utils;
+package my_budget_app.utils;
 
 import java.util.InputMismatchException;
 import java.util.Scanner;

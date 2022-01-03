@@ -1,4 +1,4 @@
-package my_budget_app.brandon_3.models;
+package my_budget_app.models;
 
 import java.math.BigDecimal;
 

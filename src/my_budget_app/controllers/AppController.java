@@ -1,7 +1,7 @@
-package my_budget_app.brandon_3.controllers;
+package my_budget_app.controllers;
 
-import my_budget_app.brandon_3.models.User;
-import my_budget_app.brandon_3.utils.UserInputUtils;
+import my_budget_app.models.User;
+import my_budget_app.utils.UserInputUtils;
 
 import java.sql.SQLException;
 
