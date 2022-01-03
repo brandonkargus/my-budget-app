@@ -1,6 +1,4 @@
-package my_budget_app;
-
-import my_budget_app.brandon_3.controllers.AppController;
+package my_budget_app.brandon_3.controllers;
 
 import java.sql.SQLException;
 
