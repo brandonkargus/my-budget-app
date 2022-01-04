@@ -129,12 +129,17 @@ public class UserController {
             first = scanner.nextLine();
             System.out.println("Please enter your last name:");
             last = scanner.nextLine();
+
+
             System.out.println("Please enter your email:");
             email = scanner.nextLine();
             while (!UserController.validate(email)) {
-                System.out.println("Invalid email format, please try again...");
+                System.out.println("Invalid email format, please try again...");  //TODO check if email already present in SQL
                 email = scanner.nextLine();
             }
+
+
+
             System.out.println("Please enter your address:");
             address = scanner.nextLine();
             System.out.println("Please enter your phone number:");
