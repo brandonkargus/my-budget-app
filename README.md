@@ -1,6 +1,6 @@
 # my-budget-app
 
-my-budget-app is a basic program for retrieving budgeting and savings information from existing users in a database, using Java, Java Database Connectivity(JDBC), and MySQL.
+my-budget-app is a basic program for retrieving account, debts, savings, and goals information from new or existing users in a database.  It uses Java 11, Java Database Connectivity(JDBC), and MySQL.
 
 ### Requirements
 
