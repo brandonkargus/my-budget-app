@@ -5,7 +5,7 @@ import java.sql.*;
 /**
  * class containing general use methods for SQL connection and disconnection
  */
-public class DBParent3 {
+public class DBParent {
     public Connection connection = null;
     public Statement statement = null;
     public ResultSet resultSet = null;

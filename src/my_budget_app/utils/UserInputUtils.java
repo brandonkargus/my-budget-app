@@ -11,7 +11,7 @@ public class UserInputUtils {
         int response = 0;
         boolean validEntry = true;
 
-        while(validEntry) {
+        while (validEntry) {
             try {
                 response = scanner.nextInt();
 

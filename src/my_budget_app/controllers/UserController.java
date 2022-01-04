@@ -49,6 +49,7 @@ public class UserController {
 
         return null;
     }
+
     public void loadUserMenu(User user) {
 
         System.out.println("You're logged in, " + user.getFirst_name() + "!");
@@ -60,9 +61,11 @@ public class UserController {
             System.out.println("2) View DEBT PROFILE(s)");
             System.out.println("3) View GOAL ENTRIES");
             System.out.println("4) View PERSONAL INFO");
-            System.out.println("5) Exit");
+            System.out.println("5) View TOTAL DEBT");
+            System.out.println("6) View TOTAL GOALS");
+            System.out.println("7) Exit");
 
-            int response = UserInputUtils.getValidIntInput(5);
+            int response = UserInputUtils.getValidIntInput(7);
 
             switch (response) {
                 case 1:
@@ -78,6 +81,12 @@ public class UserController {
                     user.printInfo();
                     break;
                 case 5:
+                    user.printTotalDebts();
+                    break;
+                case 6:
+                    user.printTotalGoals();
+                    break;
+                case 7:
                     System.out.println("Goodbye! :)");
                     return;
             }
@@ -136,18 +145,22 @@ public class UserController {
             System.out.println("Error adding user, please try again...");
         }
         user = new User(first, last, email, address, phone);
-        javaToSql.createUserInSQL(user);  //sent user data to SQL
+        javaToSql.createUserInSQL(user);
 
         JavaToSQL getUserFromDB = new JavaToSQL();
-        user = getUserFromDB.findUserByEmail(email);  //pull user data BACK FROM SQL and reassigned to user
+        user = getUserFromDB.findUserByEmail(email);
 
-        System.out.println(user.toString()); //added to verify population of "user_id" field
+        System.out.println(user.toString());
 
-        javaToSql.createAccountInSQL(createNewAccount(user));     //TODO why is this throwing "cannot add or update, foreign key constraint fails?
+        javaToSql.createAccountInSQL(createNewAccount(user));
 
         javaToSql.createDebtsInSQL(createNewDebtProfile(user));
 
         javaToSql.createGoalsInSQL(createNewGoalsSet(user));
+
+        user.setAccounts(javaToSql.loadUserAccountsById(user));
+        user.setDebts(javaToSql.loadUserDebtsById(user.getUserId()));
+        user.setGoals(javaToSql.loadUserGoalsById(user.getUserId()));
 
         return user;
     }

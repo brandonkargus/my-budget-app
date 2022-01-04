@@ -12,13 +12,6 @@ public class Goals {
     private BigDecimal misc;
 
 
-    public Goals(BigDecimal savings, BigDecimal vacation, BigDecimal retirement, BigDecimal misc) {
-        this.savings = savings;
-        this.vacation = vacation;
-        this.retirement = retirement;
-        this.misc = misc;
-    }
-
     public Goals(int user_id, BigDecimal savings, BigDecimal vacation, BigDecimal retirement, BigDecimal misc) {
         this.user_id = user_id;
         this.savings = savings;
@@ -91,6 +84,8 @@ public class Goals {
                 "Savings: $" + this.savings + "\r\n" +
                 "Vacation: $" + this.vacation + "\r\n" +
                 "Retirement: $" + this.retirement + "\r\n" +
-                "Misc: $" + this.misc;
+                "Misc: $" + this.misc + "\r\n" +
+                "--------------------------------------------" +
+                "\r\n";
     }
 }

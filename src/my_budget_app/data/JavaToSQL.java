@@ -1,13 +1,12 @@
 package my_budget_app.data;
 
-import my_budget_app.brandon_3.models.*;
 import my_budget_app.models.*;
 
 import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-public class JavaToSQL extends DBParent3 {
+public class JavaToSQL extends DBParent {
 
     public User findUserByEmail(String email) throws SQLException, ClassNotFoundException {
         String sqlStatement = "SELECT * FROM users u WHERE u.email = '" + email + "';";
@@ -48,7 +47,7 @@ public class JavaToSQL extends DBParent3 {
                 accounts.add(account);
             }
             close();
-        } catch(Exception e){
+        } catch (Exception e) {
             System.out.println("critical error");
             e.printStackTrace();
             return null;
@@ -77,7 +76,7 @@ public class JavaToSQL extends DBParent3 {
                 goals.add(goalsProfile);
             }
             close();
-        } catch(Exception e){
+        } catch (Exception e) {
             System.out.println("critical error");
             return null;
         }
@@ -102,17 +101,18 @@ public class JavaToSQL extends DBParent3 {
                 BigDecimal auto_loan = resultSet.getBigDecimal("auto_loan");
                 BigDecimal credit_card = resultSet.getBigDecimal("credit_card");
                 BigDecimal misc = resultSet.getBigDecimal("misc");
-                Debts debt = new Debts(debt_id, user_id, student_loans, home_loan, auto_loan, credit_card,  misc);
+                Debts debt = new Debts(debt_id, user_id, student_loans, home_loan, auto_loan, credit_card, misc);
                 debts.add(debt);
             }
             close();
-        } catch(Exception e){
+        } catch (Exception e) {
             System.out.println("critical error");
             return null;
         }
 
         return debts;
     }
+
     public void createUserInSQL(User user) throws SQLException {
         String sqlStatement = "INSERT INTO users(first_name, last_name, email, address, phone) VALUES('" + user.getFirst_name() + "', '" + user.getLast_name() + "', '" + user.getEmail() + "', '" + user.getAddress() + "', '" + user.getPhone() + "');";
 
@@ -124,20 +124,21 @@ public class JavaToSQL extends DBParent3 {
         }
         close();
     }
+
     public void createAccountInSQL(Accounts account) {
-        String sqlStatement = "INSERT INTO accounts(user_id, checking, savings) VALUES('" + account.getUser_id() + "', '" + account.getChecking()  + "', '" + account.getSavings() + "');";
+        String sqlStatement = "INSERT INTO accounts(user_id, checking, savings) VALUES('" + account.getUser_id() + "', '" + account.getChecking() + "', '" + account.getSavings() + "');";
 
         try {
             connectToDatabase();
             int x = statement.executeUpdate(sqlStatement);
         } catch (Exception e) {
             System.out.println("Error with account creation...");
-            e.printStackTrace();
         }
         close();
     }
+
     public void createDebtsInSQL(Debts debts) {
-        String sqlStatement = "INSERT INTO debts(user_id, student_loans, home_loans, auto_loan, credit_card, misc) VALUES('" + debts.getUser_id() + "', '" + debts.getStudent_loans() + "', '" + debts.getHome_loan() +
+        String sqlStatement = "INSERT INTO debts(user_id, student_loans, home_loan, auto_loan, credit_card, misc) VALUES('" + debts.getUser_id() + "', '" + debts.getStudent_loans() + "', '" + debts.getHome_loan() +
                 "', '" + debts.getAuto_loan() + "', '" + debts.getCredit_card() + "', '" + debts.getMisc() + "');";
 
         try {
@@ -148,6 +149,7 @@ public class JavaToSQL extends DBParent3 {
         }
         close();
     }
+
     public void createGoalsInSQL(Goals goals) {
         String sqlStatement = "INSERT INTO goals(user_id, savings, vacation, retirement, misc) VALUES('" + goals.getUser_id() + "', '" + goals.getSavings() + "', '" + goals.getVacation() + "', '" + goals.getRetirement() +
                 "', '" + goals.getMisc() + "');";

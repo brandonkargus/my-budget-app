@@ -1,8 +1,9 @@
 package my_budget_app.models;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 
-public class User extends DBParent3 {
+public class User extends DBParent {
 
     private int userId;
     private String first_name;
@@ -108,7 +109,7 @@ public class User extends DBParent3 {
         System.out.println("Here's a summary of your accounts");
         System.out.println("---------------------------------");
 
-        for (Accounts a : accounts){
+        for (Accounts a : accounts) {
             System.out.println(a.toString());
         }
     }
@@ -117,23 +118,71 @@ public class User extends DBParent3 {
         System.out.println("Here's a summary of your debts");
         System.out.println("------------------------------");
 
-        for (Debts d : debts){
+        for (Debts d : debts) {
             System.out.println(d.toString());
         }
+
     }
 
     public void printGoals() {
         System.out.println("Here's a summary of your goals");
         System.out.println("------------------------------");
 
-        for (Goals g : goals){
+        for (Goals g : goals) {
             System.out.println(g.toString());
         }
+    }
+
+    public void printTotalDebts() {
+        System.out.println("Your total debt at this time is....");
+        System.out.println();
+        ArrayList<BigDecimal> allDebts = new ArrayList<>();
+        for (Debts d : debts) {
+            allDebts.add(d.getAuto_loan());
+            allDebts.add(d.getCredit_card());
+            allDebts.add(d.getHome_loan());
+            allDebts.add(d.getStudent_loans());
+            allDebts.add(d.getMisc());
+
+        }
+        BigDecimal total = allDebts.stream().reduce(BigDecimal.ZERO, BigDecimal::add);
+        int totalMonths = (int) (Math.round(total.doubleValue()) / 500);
+        int years = totalMonths / 12;
+        System.out.println("$" + total);
+        System.out.println("---------------------------------");
+        System.out.println("QUICK FACT:  Paying $750 per month toward your total would eliminate your debt in ~" + totalMonths + " months (~" + years + " years)..");
+        System.out.println("---------------------------------");
+    }
+
+    public void printTotalGoals() {
+        System.out.println("Your total savings goal at this time.....");
+        System.out.println();
+        ArrayList<BigDecimal> allGoals = new ArrayList<>();
+        for (Goals g : goals) {
+            allGoals.add(g.getVacation());
+            allGoals.add(g.getSavings());
+            allGoals.add(g.getRetirement());
+            allGoals.add(g.getMisc());
+        }
+        BigDecimal total = allGoals.stream().reduce(BigDecimal.ZERO, BigDecimal::add);
+        System.out.println("$ " + total);
+
+        ArrayList<BigDecimal> allVaca = new ArrayList<>();
+        for (Goals g : goals) {
+            allVaca.add(g.getVacation());
+        }
+
+        BigDecimal totalVacation = allVaca.stream().reduce(BigDecimal.ZERO, BigDecimal::add);
+        int totalMonths = (int) (Math.round(totalVacation.doubleValue()) / 250);
+        System.out.println("---------------------------------");
+        System.out.println("QUICK FACT: If you saved $250 per month toward your vacation goals, you'd achieve them in ~" + totalMonths + " months!...");
+        System.out.println("---------------------------------");
     }
 
     public void printInfo() {
         System.out.println(this);
     }
+
     @Override
     public String toString() {
         return "Your user profile is as follows...." + "\r\n" +
@@ -143,6 +192,8 @@ public class User extends DBParent3 {
                 "Last Name: " + this.last_name + "\r\n" +
                 "Email: " + this.email + "\r\n" +
                 "Address: " + this.address + "\r\n" +
-                "Phone: " + this.phone ;
+                "Phone: " + this.phone + "\r\n" +
+                "---------------------------------------" +
+                "\r\n";
     }
 }

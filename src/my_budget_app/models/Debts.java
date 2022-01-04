@@ -13,14 +13,6 @@ public class Debts {
     private BigDecimal misc;
 
 
-    public Debts(BigDecimal student_loans, BigDecimal home_loan, BigDecimal auto_loan, BigDecimal credit_card, BigDecimal misc) {
-        this.student_loans = student_loans;
-        this.home_loan = home_loan;
-        this.auto_loan = auto_loan;
-        this.credit_card = credit_card;
-        this.misc = misc;
-    }
-
     public Debts(int user_id, BigDecimal student_loans, BigDecimal home_loan, BigDecimal auto_loan, BigDecimal credit_card, BigDecimal misc) {
         this.user_id = user_id;
         this.student_loans = student_loans;
@@ -31,7 +23,8 @@ public class Debts {
     }
 
     public Debts(int debt_id, int user_id, BigDecimal student_loans, BigDecimal home_loan, BigDecimal auto_loan, BigDecimal credit_card, BigDecimal misc) {
-        this.debt_id = user_id;
+        this.debt_id = debt_id;
+        this.user_id = user_id;
         this.student_loans = student_loans;
         this.home_loan = home_loan;
         this.auto_loan = auto_loan;
@@ -95,6 +88,8 @@ public class Debts {
                 "Home Loan: $" + home_loan + "\r\n" +
                 "Auto Loans: $" + auto_loan + "\r\n" +
                 "Credit Card: $" + credit_card + "\r\n" +
-                "Misc: $" + misc;
+                "Misc: $" + misc + "\r\n" +
+                "-------------------------------------" +
+                "\r\n";
     }
 }

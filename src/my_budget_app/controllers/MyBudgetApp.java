@@ -9,6 +9,7 @@ public class MyBudgetApp {
 
     /**
      * main method to run the program, using a print-out line, and the logInProcedure() method
+     *
      * @param args
      */
     public static void main(String[] args) throws SQLException, ClassNotFoundException {

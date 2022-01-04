@@ -2,7 +2,7 @@ package my_budget_app.models;
 
 import java.math.BigDecimal;
 
-public class Accounts extends DBParent3 {
+public class Accounts extends DBParent {
 
     private int account_id;
     private int user_id;
@@ -10,13 +10,8 @@ public class Accounts extends DBParent3 {
     private BigDecimal savings;
 
 
-    public Accounts(BigDecimal checking, BigDecimal savings) {
-        this.checking = checking;
-        this.savings = savings;
-    }
-
     public Accounts(int user_id, BigDecimal checking, BigDecimal savings) {
-        this.account_id = user_id;
+        this.user_id = user_id;
         this.checking = checking;
         this.savings = savings;
     }
@@ -52,6 +47,8 @@ public class Accounts extends DBParent3 {
                 "\r\n" +
                 "Account Number: " + this.account_id + "\r\n" +
                 "Checking: $" + this.checking + "\r\n" +
-                "Savings: $" + this.savings;
+                "Savings: $" + this.savings + "\r\n" +
+                "\r\n" +
+                "---------------------------------";
     }
 }
