@@ -2,18 +2,20 @@ package my_budget_app.controllers;
 
 import java.sql.SQLException;
 
+import static my_budget_app.controllers.AppController.runApp;
+
 /**
- * class where the main method lives
+ * bootstrapping class where the main method lives
  */
 public class MyBudgetApp {
 
     /**
-     * main method to run the program, using a print-out line, and the logInProcedure() method
+     * bootstrapping method
      *
      * @param args
      */
     public static void main(String[] args) throws SQLException, ClassNotFoundException {
 
-        AppController.runApp();
+        runApp();
     }
 }

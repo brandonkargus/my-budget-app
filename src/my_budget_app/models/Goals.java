@@ -11,7 +11,6 @@ public class Goals {
     private BigDecimal retirement;
     private BigDecimal misc;
 
-
     public Goals(int user_id, BigDecimal savings, BigDecimal vacation, BigDecimal retirement, BigDecimal misc) {
         this.user_id = user_id;
         this.savings = savings;

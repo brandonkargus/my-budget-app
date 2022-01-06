@@ -1,5 +1,7 @@
 package my_budget_app.models;
 
+import my_budget_app.dataAndservices.DBParent;
+
 import java.math.BigDecimal;
 
 public class Accounts extends DBParent {
@@ -8,7 +10,6 @@ public class Accounts extends DBParent {
     private int user_id;
     private BigDecimal checking;
     private BigDecimal savings;
-
 
     public Accounts(int user_id, BigDecimal checking, BigDecimal savings) {
         this.user_id = user_id;
@@ -39,7 +40,6 @@ public class Accounts extends DBParent {
     public void setSavings(BigDecimal savings) {
         this.savings = savings;
     }
-
 
     @Override
     public String toString() {

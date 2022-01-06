@@ -1,6 +1,6 @@
 package my_budget_app.controllers;
 
-import my_budget_app.data.JavaToSQL;
+import my_budget_app.dataAndservices.JavaToSQL;
 import my_budget_app.models.Accounts;
 import my_budget_app.models.Debts;
 import my_budget_app.models.Goals;
@@ -14,19 +14,37 @@ import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static my_budget_app.controllers.AppController.runApp;
+
+/**
+ * class that controls interaction with user, including new user creation in SQL
+ */
 public class UserController {
 
     JavaToSQL javaToSql = new JavaToSQL();
 
+    /**
+     * RegEx pattern to validate email format
+     */
     public static final Pattern VALID_EMAIL_ADDRESS_REGEX =
             Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
 
 
+    /**
+     * pretty self-explanatory
+     */
     public void welcomeUser() {
-        System.out.println("Welcome back to your Budget App! What would you like to do? (enter 1 or 2)");
+        System.out.println("Welcome to \"My Budget App\"! What would you like to do? (Enter 1 or 2)");
     }
 
-    public User logInUser() {
+    /**
+     * checks in user exists in SQL.  A new user is created with the information found.  Null returned if not found
+     *
+     * @return
+     * @throws SQLException
+     * @throws ClassNotFoundException
+     */
+    public User logInUser() throws SQLException, ClassNotFoundException {
 
         System.out.println("Please enter your email:");
         String email = readValidEmail();
@@ -44,18 +62,29 @@ public class UserController {
                 return null;
             }
         } catch (SQLException | ClassNotFoundException throwable) {
-            throwable.printStackTrace();
+            System.out.println("Error has occurred, try again...");
+            System.out.println();
+            logInUser();
         }
 
         return null;
     }
 
-    public void loadUserMenu(User user) {
+    /**
+     * loads user menu once a valid user has been created/located, and data retrieved
+     *
+     * @param user
+     * @throws SQLException
+     * @throws ClassNotFoundException
+     */
+    public void loadUserMenu(User user) throws SQLException, ClassNotFoundException {
 
         System.out.println("You're logged in, " + user.getFirst_name() + "!");
         System.out.println();
 
-        while (true) {
+        boolean quit = false;
+
+        while (!quit) {
             System.out.println("What would you like to do?");
             System.out.println("1) View ACCOUNT BALANCE(s)");
             System.out.println("2) View DEBT PROFILE(s)");
@@ -63,7 +92,7 @@ public class UserController {
             System.out.println("4) View PERSONAL INFO");
             System.out.println("5) View TOTAL DEBT");
             System.out.println("6) View TOTAL GOALS");
-            System.out.println("7) Exit");
+            System.out.println("7) Log out");
 
             int response = UserInputUtils.getValidIntInput(7);
 
@@ -87,32 +116,53 @@ public class UserController {
                     user.printTotalGoals();
                     break;
                 case 7:
-                    System.out.println("Goodbye! :)");
-                    return;
+                    System.out.println("You've logged out, returning to main menu....");
+                    System.out.println();
+                    quit = true;
+                    runApp();
+
             }
         }
-
     }
 
+    /**
+     * ensures user entered email adheres to proper format before returning as a String
+     *
+     * @return
+     */
     private String readValidEmail() {
 
         Scanner scanner = new Scanner(System.in);
+
         String email = scanner.nextLine();
 
         while (!UserController.validate(email)) {
             System.out.println("Please enter a valid email...");
             email = scanner.nextLine();
-
         }
 
         return email;
     }
 
+    /**
+     * compares String (emailStr) against the RegEx proper email format
+     *
+     * @param emailStr
+     * @return
+     */
     public static boolean validate(String emailStr) {
         Matcher matcher = VALID_EMAIL_ADDRESS_REGEX.matcher(emailStr);
+
         return matcher.find();
     }
 
+    /**
+     * creates a new user object and adds a new accounts, debts, goals, object.  The information is passed to SQL, and returned with Primary Key (user_id) for user column attached.  User object then returned
+     *
+     * @return
+     * @throws SQLException
+     * @throws ClassNotFoundException
+     */
     public User createNewUser() throws SQLException, ClassNotFoundException {
         Scanner scanner = new Scanner(System.in);
 
@@ -130,15 +180,20 @@ public class UserController {
             System.out.println("Please enter your last name:");
             last = scanner.nextLine();
 
-
-            System.out.println("Please enter your email:");
-            email = scanner.nextLine();
-            while (!UserController.validate(email)) {
-                System.out.println("Invalid email format, please try again...");  //TODO check if email already present in SQL
+            do {
+                System.out.println("Please enter your email:");
                 email = scanner.nextLine();
-            }
+                while (!UserController.validate(email)) {
+                    System.out.println("Invalid email format, please try again...");
+                    email = scanner.nextLine();
+                }
 
+                user = javaToSql.checkUserExistsInSQL(email);
+                if (user != null) {
+                    System.out.println("User with that email already exists.....");
+                }
 
+            } while (user != null);
 
             System.out.println("Please enter your address:");
             address = scanner.nextLine();
@@ -147,20 +202,18 @@ public class UserController {
             System.out.println("--------------------------");
 
         } catch (Exception e) {
+
             System.out.println("Error adding user, please try again...");
         }
+
         user = new User(first, last, email, address, phone);
         javaToSql.createUserInSQL(user);
 
         JavaToSQL getUserFromDB = new JavaToSQL();
         user = getUserFromDB.findUserByEmail(email);
 
-        System.out.println(user.toString());
-
         javaToSql.createAccountInSQL(createNewAccount(user));
-
         javaToSql.createDebtsInSQL(createNewDebtProfile(user));
-
         javaToSql.createGoalsInSQL(createNewGoalsSet(user));
 
         user.setAccounts(javaToSql.loadUserAccountsById(user));
@@ -170,33 +223,43 @@ public class UserController {
         return user;
     }
 
+    /**
+     * used to take in user input for Accounts creation information, returns new Accounts object, passing user_id (Foreign Key in this table) allows creation in SQL
+     *
+     * @param user
+     * @return
+     */
     public Accounts createNewAccount(User user) {
         Scanner scanner = new Scanner(System.in);
+
         System.out.println("We will now save some account information..");
         System.out.println();
-        BigDecimal checking, savings;
-        while (true) {
-            checking = null;
-            savings = null;
-            try {
-                System.out.println("Please enter the Checking account balance from the account you wish to add:");
-                checking = scanner.nextBigDecimal();
-                System.out.println("Next, please enter the Savings account balance from this account:");
-                savings = scanner.nextBigDecimal();
 
-            } catch (InputMismatchException e) {
-                System.out.println("Invalid entry, please enter numbers only...");
-                System.out.println();
-                scanner.next();
-                createNewAccount(user);
-            }
-            return new Accounts(user.getUserId(), checking, savings);
+        BigDecimal checking = null, savings = null;
 
+        try {
+            System.out.println("Please enter the Checking account balance from the account you wish to add:");
+            checking = scanner.nextBigDecimal();
+            System.out.println("Next, please enter the Savings account balance from this account:");
+            savings = scanner.nextBigDecimal();
+
+        } catch (InputMismatchException e) {
+            System.out.println("Invalid entry, please enter numbers only...");
+            System.out.println();
+            scanner.next();
+            createNewAccount(user);
         }
 
+        return new Accounts(user.getUserId(), checking, savings);
 
     }
 
+    /**
+     * used to take in user input for Debts creation information, returns new Debts object, passing user_id (Foreign Key in this table) allows creation in SQL
+     *
+     * @param user
+     * @return
+     */
     public Debts createNewDebtProfile(User user) {
         Scanner scanner = new Scanner(System.in);
 
@@ -205,37 +268,21 @@ public class UserController {
         try {
             System.out.println("We will now get some information about your debts...");
             System.out.println();
-            System.out.println("Please enter your total student loans (0 for none):");
-            studentLoans = scanner.nextBigDecimal();
-            while (studentLoans.compareTo(BigDecimal.valueOf(0)) < 0) {
-                System.out.println("Number cannot be negative, please try again...");
-                studentLoans = scanner.nextBigDecimal();
-            }
-            System.out.println("Please enter your total home loan (0 for none):");
-            homeLoan = scanner.nextBigDecimal();
-            while (homeLoan.compareTo(BigDecimal.valueOf(0)) < 0) {
-                System.out.println("Number cannot be negative, please try again...");
-                homeLoan = scanner.nextBigDecimal();
-            }
-            System.out.println("Please enter your total automobile loans (0 for none):");
-            autoLoans = scanner.nextBigDecimal();
-            while (autoLoans.compareTo(BigDecimal.valueOf(0)) < 0) {
-                System.out.println("Number cannot be negative, please try again...");
-                autoLoans = scanner.nextBigDecimal();
-            }
-            System.out.println("Please enter your total credit card balance (0 for none):");
-            creditCard = scanner.nextBigDecimal();
-            while (creditCard.compareTo(BigDecimal.valueOf(0)) < 0) {
-                System.out.println("Number cannot be negative, please try again...");
-                creditCard = scanner.nextBigDecimal();
-            }
-            System.out.println("Please enter any other outstanding amount owed (0 for none):");
-            misc = scanner.nextBigDecimal();
-            while (misc.compareTo(BigDecimal.valueOf(0)) < 0) {
-                System.out.println("Number cannot be negative, please try again...");
-                misc = scanner.nextBigDecimal();
-            }
 
+            System.out.println("Please enter your total student loans (0 for none):");
+            studentLoans = UserInputUtils.getValidBigDecimalInput();
+
+            System.out.println("Please enter your total home loan (0 for none):");
+            homeLoan = UserInputUtils.getValidBigDecimalInput();
+
+            System.out.println("Please enter your total automobile loans (0 for none):");
+            autoLoans = UserInputUtils.getValidBigDecimalInput();
+
+            System.out.println("Please enter your total credit card balance (0 for none):");
+            creditCard = UserInputUtils.getValidBigDecimalInput();
+
+            System.out.println("Please enter any other outstanding amount owed (0 for none):");
+            misc = UserInputUtils.getValidBigDecimalInput();
 
         } catch (InputMismatchException e) {
             System.out.println("Invalid entry, numbers only.  Starting over.....");
@@ -243,48 +290,44 @@ public class UserController {
             scanner.next();
             createNewDebtProfile(user);
         }
+
         return new Debts(user.getUserId(), studentLoans, homeLoan, autoLoans, creditCard, misc);
 
     }
 
+    /**
+     * used to take in user input for Goals creation information, returns new Goals object, passing user_id (Foreign Key in this table) allows creation in SQL
+     *
+     * @param user
+     * @return
+     */
     public Goals createNewGoalsSet(User user) {
         Scanner scanner = new Scanner(System.in);
         BigDecimal savings = null, vacation = null, retirement = null, misc = null;
         try {
             System.out.println("Now, it's time to create a new set of goals...");
             System.out.println();
+
             System.out.println("Please enter a savings goal:");
-            savings = scanner.nextBigDecimal();
-            while (savings.compareTo(BigDecimal.valueOf(0)) < 0) {
-                System.out.println("Number cannot be negative, please try again...");
-                savings = scanner.nextBigDecimal();
-            }
+            savings = UserInputUtils.getValidBigDecimalInput();
+
             System.out.println("Please enter a vacation goal:");
-            vacation = scanner.nextBigDecimal();
-            while (vacation.compareTo(BigDecimal.valueOf(0)) < 0) {
-                System.out.println("Number cannot be negative, please try again...");
-                vacation = scanner.nextBigDecimal();
-            }
-            System.out.println("Please enter a retirement goa:l");
-            retirement = scanner.nextBigDecimal();
-            while (retirement.compareTo(BigDecimal.valueOf(0)) < 0) {
-                System.out.println("Number cannot be negative, please try again...");
-                retirement = scanner.nextBigDecimal();
-            }
+            vacation = UserInputUtils.getValidBigDecimalInput();
+
+            System.out.println("Please enter a retirement goal:");
+            retirement = UserInputUtils.getValidBigDecimalInput();
+
             System.out.println("Please enter any other general purpose goal:");
-            misc = scanner.nextBigDecimal();
-            while (misc.compareTo(BigDecimal.valueOf(0)) < 0) {
-                System.out.println("Number cannot be negative, please try again...");
-                misc = scanner.nextBigDecimal();
-            }
+            misc = UserInputUtils.getValidBigDecimalInput();
+
         } catch (InputMismatchException e) {
             System.out.println("Invalid entry, numbers only.  Starting over....");
             System.out.println("----------------------------------");
             scanner.next();
             createNewGoalsSet(user);
         }
+
         return new Goals(user.getUserId(), savings, vacation, retirement, misc);
 
     }
-
 }

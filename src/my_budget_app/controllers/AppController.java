@@ -5,11 +5,22 @@ import my_budget_app.utils.UserInputUtils;
 
 import java.sql.SQLException;
 
+/**
+ * class containing methods used to run app
+ */
+
 public class AppController {
 
+    /**
+     * called from the bootstrapping method, provides most functionality for program utilizing calls to various methods
+     *
+     * @throws SQLException
+     * @throws ClassNotFoundException
+     */
     public static void runApp() throws SQLException, ClassNotFoundException {
         AppController app = new AppController();
         UserController userController = new UserController();
+
         userController.welcomeUser();
         int response = app.printMainMenu();
 
@@ -17,40 +28,33 @@ public class AppController {
             System.out.println("Goodbye! :)");
             return;
         }
-        User user = null;
 
-        if (response == 1) {
-
-            while (true) {
-                user = userController.logInUser();
-
-                if (user == null) {
-                    System.out.println("What would you like to do? (enter 1 or 2)");
-                    System.out.println("1) Create a new account:");
-                    System.out.println("2) Re-enter email:");
-
-                    response = UserInputUtils.getValidIntInput(2);
-
-                    if (response == 1) {
-                        user = userController.createNewUser();
-
-                    } else {
-                        continue;
-                    }
+        User user;
+        do {
+            user = userController.logInUser();
+            if (user == null) {
+                System.out.println("What would you like to do? (enter 1 or 2)");
+                System.out.println("1) Create a new account:");
+                System.out.println("2) Re-enter email:");
+                response = UserInputUtils.getValidIntInput(2);
+                if (response == 1) {
+                    user = userController.createNewUser();
                 }
-                break;
             }
-        }
-        userController.loadUserMenu(user);
+        } while (user == null);
 
+        userController.loadUserMenu(user);
     }
 
+    /**
+     * prints the menu and calls getValidIntInput() method for validation
+     *
+     * @return
+     */
     private int printMainMenu() {
         System.out.println("1) LOG IN");
         System.out.println("2) EXIT");
 
         return UserInputUtils.getValidIntInput(2);
     }
-
-
 }

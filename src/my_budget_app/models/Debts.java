@@ -12,7 +12,6 @@ public class Debts {
     private BigDecimal credit_card;
     private BigDecimal misc;
 
-
     public Debts(int user_id, BigDecimal student_loans, BigDecimal home_loan, BigDecimal auto_loan, BigDecimal credit_card, BigDecimal misc) {
         this.user_id = user_id;
         this.student_loans = student_loans;
