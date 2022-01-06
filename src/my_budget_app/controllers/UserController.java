@@ -38,7 +38,7 @@ public class UserController {
     }
 
     /**
-     * checks in user exists in SQL.  A new user is created with the information found.  Null returned if not found
+     * checks if user exists in SQL.  A new user is created with the information found.  Null returned if not found
      *
      * @return
      * @throws SQLException
@@ -145,7 +145,7 @@ public class UserController {
     }
 
     /**
-     * compares String (emailStr) against the RegEx proper email format
+     * compares String (emailStr) against the RegEx "proper email" format
      *
      * @param emailStr
      * @return
