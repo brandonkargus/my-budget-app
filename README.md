@@ -1,10 +1,7 @@
 # my-budget-app
 
-<<<<<<< HEAD
+
 my-budget-app is a basic program for retrieving account, debts, savings, and goals information from new or existing users in a database.  It uses Java 11, Java Database Connectivity(JDBC), and MySQL.
-=======
-my-budget-app is a basic program for retrieving account, debts, savings, and goal information from new or existing users in a database.  It uses Java 11, Java Database Connectivity(JDBC), and MySQL.
->>>>>>> 6a79ab80ca2b77514b3279504e468d9ec539a964
 
 ### Requirements
 
