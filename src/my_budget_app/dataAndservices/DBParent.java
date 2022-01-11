@@ -1,5 +1,7 @@
-package my_budget_app.data;
+package my_budget_app.dataAndservices;
 
+import java.net.URLEncoder;
+import java.nio.charset.Charset;
 import java.sql.*;
 
 /**
@@ -19,7 +21,11 @@ public class DBParent {
     public void connectToDatabase() throws SQLException, ClassNotFoundException {
         Class.forName("com.mysql.cj.jdbc.Driver");
         String connectionString = "jdbc:mysql://localhost/my_budget_db?"
+<<<<<<< HEAD:src/my_budget_app/data/DBParent.java
                 + "user=root&password=******"
+=======
+                + "user=root&password=" + URLEncoder.encode(System.getenv("SECRET_KEY"), Charset.defaultCharset())
+>>>>>>> version_3:src/my_budget_app/dataAndservices/DBParent.java
                 + "&useSSL=false&allowPublicKeyRetrieval=true";
         connection = DriverManager.getConnection(connectionString);
         statement = connection.createStatement();
@@ -28,7 +34,7 @@ public class DBParent {
     /**
      * general use method that closes all SQL related objects in one call
      */
-    void close() {
+    public void close() {
         try {
             if (resultSet != null) {
                 resultSet.close();

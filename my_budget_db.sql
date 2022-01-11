@@ -26,11 +26,14 @@ DROP TABLE IF EXISTS `accounts`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `accounts` (
   `account_id` int NOT NULL AUTO_INCREMENT,
-  `checking` int NOT NULL,
-  `savings` int NOT NULL,
+  `user_id` int NOT NULL,
+  `checking` decimal(10,0) NOT NULL,
+  `savings` decimal(10,0) NOT NULL,
   PRIMARY KEY (`account_id`),
-  UNIQUE KEY `account_id_UNIQUE` (`account_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  UNIQUE KEY `account_id_UNIQUE` (`account_id`),
+  KEY `accounts_users_fk_idx` (`user_id`),
+  CONSTRAINT `accounts_users_fk` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -39,7 +42,7 @@ CREATE TABLE `accounts` (
 
 LOCK TABLES `accounts` WRITE;
 /*!40000 ALTER TABLE `accounts` DISABLE KEYS */;
-INSERT INTO `accounts` VALUES (5,5000,2500),(6,650,8000),(7,1200,3500);
+INSERT INTO `accounts` VALUES (5,4,5000,2500),(6,5,650,8000),(7,6,1200,3500);
 /*!40000 ALTER TABLE `accounts` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -52,14 +55,17 @@ DROP TABLE IF EXISTS `debts`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `debts` (
   `debts_id` int NOT NULL AUTO_INCREMENT,
-  `student_loans` int NOT NULL,
-  `home_loan` int NOT NULL,
-  `auto_loan` int NOT NULL,
-  `credit_card` int NOT NULL,
-  `misc` int NOT NULL,
+  `user_id` int NOT NULL,
+  `student_loans` decimal(10,0) NOT NULL,
+  `home_loan` decimal(10,0) NOT NULL,
+  `auto_loan` decimal(10,0) NOT NULL,
+  `credit_card` decimal(10,0) NOT NULL,
+  `misc` decimal(10,0) NOT NULL,
   PRIMARY KEY (`debts_id`),
-  UNIQUE KEY `debts_id_UNIQUE` (`debts_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  UNIQUE KEY `debts_id_UNIQUE` (`debts_id`),
+  KEY `debts_user_fk_idx` (`user_id`),
+  CONSTRAINT `debts_users_fk` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -68,7 +74,7 @@ CREATE TABLE `debts` (
 
 LOCK TABLES `debts` WRITE;
 /*!40000 ALTER TABLE `debts` DISABLE KEYS */;
-INSERT INTO `debts` VALUES (5,35000,250000,4500,0,0),(6,65000,175000,35000,5000,500),(7,7500,0,15000,750,225);
+INSERT INTO `debts` VALUES (5,4,35000,250000,4500,0,0),(6,5,65000,175000,35000,5000,500),(7,6,7500,0,15000,750,225);
 /*!40000 ALTER TABLE `debts` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -81,13 +87,16 @@ DROP TABLE IF EXISTS `goals`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `goals` (
   `goals_id` int NOT NULL AUTO_INCREMENT,
-  `savings` int NOT NULL,
-  `vacation` int NOT NULL,
-  `retirement` int NOT NULL,
-  `misc` int NOT NULL,
+  `user_id` int NOT NULL,
+  `savings` decimal(10,0) NOT NULL,
+  `vacation` decimal(10,0) NOT NULL,
+  `retirement` decimal(10,0) NOT NULL,
+  `misc` decimal(10,0) NOT NULL,
   PRIMARY KEY (`goals_id`),
-  UNIQUE KEY `goals_id_UNIQUE` (`goals_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  UNIQUE KEY `goals_id_UNIQUE` (`goals_id`),
+  KEY `goals_users_fk_idx` (`user_id`),
+  CONSTRAINT `goals_users_fk` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -96,7 +105,7 @@ CREATE TABLE `goals` (
 
 LOCK TABLES `goals` WRITE;
 /*!40000 ALTER TABLE `goals` DISABLE KEYS */;
-INSERT INTO `goals` VALUES (5,25000,5600,500000,0),(6,6000,1200,5000000,0),(7,13000,3000,250000,3000);
+INSERT INTO `goals` VALUES (5,4,25000,5600,500000,0),(6,5,6000,1200,5000000,0),(7,6,13000,3000,250000,3000);
 /*!40000 ALTER TABLE `goals` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -114,18 +123,10 @@ CREATE TABLE `users` (
   `email` varchar(45) NOT NULL,
   `address` varchar(500) NOT NULL,
   `phone` varchar(20) NOT NULL,
-  `account` int NOT NULL,
-  `debts` int NOT NULL,
-  `goals` int NOT NULL,
   PRIMARY KEY (`user_id`),
   UNIQUE KEY `user_id_UNIQUE` (`user_id`),
-  KEY `account_user_idx` (`account`),
-  KEY `debts_user_idx` (`debts`),
-  KEY `goals_user_idx` (`goals`),
-  CONSTRAINT `account_user` FOREIGN KEY (`account`) REFERENCES `accounts` (`account_id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `debts_user` FOREIGN KEY (`debts`) REFERENCES `debts` (`debts_id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `goals_user` FOREIGN KEY (`goals`) REFERENCES `goals` (`goals_id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  UNIQUE KEY `email_UNIQUE` (`email`)
+) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -134,7 +135,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (4,'Sarah','Strawberry','straw@codingnomads.co','1234 Walnut Way, Wayzata, MN, USA','612-908-1111',5,5,5),(5,'Peter','Pickle','pickle@gmail.com','555 Fallen Oaks Drive, Atlanta, GA, USA','708-657-1134',6,6,6),(6,'Rasheed','Raisin','raisin@hotmail.com','6776 230th St W, Whitefish, MT, USA','210-545-1986',7,7,7);
+INSERT INTO `users` VALUES (4,'Sarah','Strawberry','straw@codingnomads.co','1234 Walnut Way, Wayzata, MN, USA','612-908-1111'),(5,'Peter','Pickle','pickle@gmail.com','555 Fallen Oaks Drive, Atlanta, GA, USA','708-657-1134'),(6,'Rasheed','Raisin','raisin@hotmail.com','6776 230th St W, Whitefish, MT, USA','210-545-1986');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -147,4 +148,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-12-26 12:52:33
+-- Dump completed on 2022-01-04 15:53:09
